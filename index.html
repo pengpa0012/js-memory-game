@@ -10,8 +10,22 @@
 </head>
 <body>
   <div class="max-w-lg mx-auto">
-    <h1 class="text-3xl text-center my-12">JS Memory Game</h1>
-    <div class="cards flex justify-center flex-wrap gap-3">
+    <h1 class="text-4xl text-center my-12">JS Memory Game</h1>
+    <div class="flex flex-col gap-5 justify-center text-center start-menu">
+      <h2 class="text-3xl">Choose difficulty</h2>
+      <ul class="flex gap-5 justify-center items-center difficulty">
+        <li class="text-xl cursor-pointer py-1 px-2">Easy</li>
+        <li class="text-xl cursor-pointer py-1 px-2">Normal</li>
+        <li class="text-xl cursor-pointer py-1 px-2">Hard</li>
+      </ul>
+      <button class="bg-green-500 rounded-md py-2 px-6 text-white flex self-center start">Start</button>
+    </div>
+    <!-- <h1>Your Time: 213123</h1>
+    <div class="flex">
+      <button>Home</button>
+      <button>Restart</button>
+    </div> -->
+    <div class="cards flex justify-center flex-wrap gap-3 hidden">
       <div class="w-[100px] h-[150px] bg-gray-400 rounded-md"></div>
       <div class="w-[100px] h-[150px] bg-gray-400 rounded-md"></div>
       <div class="w-[100px] h-[150px] bg-gray-400 rounded-md"></div>

@@ -3,3 +3,9 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+.difficulty li.selected {
+  background: #a1a1a1;
+  color: #fff;
+  border-radius: 5px;
+}
