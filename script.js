@@ -4,6 +4,8 @@ const cards = document.querySelectorAll(".card")
 const startBtn = document.querySelector(".start")
 const startMenu = document.querySelector(".start-menu")
 
+let selected = []
+
 {/* <div class="card bg-gray-400 rounded-md">
 <div class="cover"></div>
 </div> */}
@@ -32,9 +34,35 @@ function startGame() {
 
 
 function selectCard(e) {
+  selected.push(e.target.attributes["data-value"].value)
+  console.log(selected.length, checkMatch(), selected)
   e.target.classList.remove("selected")
+  if(selected.length == 2) {
+    if(checkMatch()) {
+      // do nothing
+    } else {
+      e.target.classList.remove("selected")
+     
+      setTimeout(() => {
+        hideCards()
+      }, 1000)
+    }
+    selected = []
+    return
+  }
 }
 
 function checkMatch() {
+  const matched = selected[0] == selected[1]
+  return matched
+}
+
+function hideCards() {
+  cards.forEach(el => {
+    el.classList.add("selected")
+  })
+}
+
+function shuffleCards() {
 
 }
