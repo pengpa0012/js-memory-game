@@ -4,11 +4,14 @@ const timer = document.querySelector(".timer")
 const cardsClick = document.querySelector("div")
 const startBtn = document.querySelector(".start")
 const startMenu = document.querySelector(".start-menu")
+const scoreScreen = document.querySelector(".score-screen")
+const finalScore = document.querySelector(".score-screen h4")
 
 let selected = []
 let disableClick = false
 let time
 let seconds = 0
+let isGameEnd = false
 
 const cardData = [
   {
@@ -81,6 +84,11 @@ function selectCard(e) {
     const cards = document.querySelectorAll(".card")
     if(Array.from(cards).every(el => !el.classList.contains("selected"))) {
       clearInterval(time)
+      isGameEnd = true
+      cardCover.classList.add("hidden")
+      timer.classList.add("hidden")
+      scoreScreen.classList.remove("hidden")
+      finalScore.textContent = seconds
     }
     selected =  []
   } else if (selected.length == 2) {
