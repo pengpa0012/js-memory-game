@@ -39,6 +39,7 @@
 .cover::after {
   transition: 250ms ease-in;
   pointer-events: none;
+  z-index: 10;
 }
 
 .card.selected > .cover{
