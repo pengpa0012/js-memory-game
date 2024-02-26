@@ -55,9 +55,10 @@ function checkMatch() {
 }
 
 function hideCards() {
-  // change to two selected cards
   cards.forEach(el => {
-    el.classList.add("selected")
+    if(selected.find(card => card == el.attributes["data-value"].value)) {
+      el.classList.add("selected")
+    }
   })
   selected =  []
 }
