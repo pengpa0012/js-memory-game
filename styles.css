@@ -22,7 +22,7 @@
   width: 100%;
   height: 100%;
   transform: translateX(-100%);
-  background: red;
+  background: #aa1919;
 }
 
 .cover::after {
@@ -31,7 +31,7 @@
   height: 100%;
   width: 100%;
   transform: translateX(200%);
-  background: blue;
+  background: #2323a3;
   right: 0;
 }
 

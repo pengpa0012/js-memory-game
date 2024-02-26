@@ -5,10 +5,8 @@ const startBtn = document.querySelector(".start")
 const startMenu = document.querySelector(".start-menu")
 
 let selected = []
+let disableClick = false
 
-{/* <div class="card bg-gray-400 rounded-md">
-<div class="cover"></div>
-</div> */}
 
 let selectedDifficulty = ""
 
@@ -34,21 +32,20 @@ function startGame() {
 
 
 function selectCard(e) {
+  if(selected.length == 2 || disableClick) return
+
   selected.push(e.target.attributes["data-value"].value)
-  console.log(selected.length, checkMatch(), selected)
   e.target.classList.remove("selected")
-  if(selected.length == 2) {
-    if(checkMatch()) {
-      // do nothing
-    } else {
-      e.target.classList.remove("selected")
-     
-      setTimeout(() => {
-        hideCards()
-      }, 1000)
-    }
-    selected = []
-    return
+
+  if(selected.length == 2 && checkMatch()) {
+    // do nothing
+    selected =  []
+  } else if (selected.length == 2) {
+    disableClick = true
+    setTimeout(() => {
+      hideCards()
+      disableClick = false
+    }, 1000)
   }
 }
 
@@ -58,9 +55,11 @@ function checkMatch() {
 }
 
 function hideCards() {
+  // change to two selected cards
   cards.forEach(el => {
     el.classList.add("selected")
   })
+  selected =  []
 }
 
 function shuffleCards() {
