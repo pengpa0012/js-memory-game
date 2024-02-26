@@ -107,7 +107,6 @@ function shuffleCards() {
 }
 
 function generateCards(cards) {
-  // randomize the array here
   const newCards = [...cards, ...cards]
-  return newCards
+  return newCards.sort(() => Math.random() - 0.5);
 }
