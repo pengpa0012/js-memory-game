@@ -79,6 +79,7 @@ function selectCard(e) {
 
   selected.push(e.target.attributes["data-value"].value)
   e.target.classList.remove("selected")
+  e.target.classList.add("pointer-events-none")
 
   if(selected.length == 2 && checkMatch()) {
     const cards = document.querySelectorAll(".card")
@@ -110,6 +111,7 @@ function hideCards() {
   cards.forEach(el => {
     if(selected.find(card => card == el.attributes["data-value"].value)) {
       el.classList.add("selected")
+      el.classList.remove("pointer-events-none")
     }
   })
   selected =  []
