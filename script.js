@@ -1,13 +1,14 @@
 const difficulties = document.querySelectorAll(".difficulty li")
 const cardCover = document.querySelector(".cards")
+const timer = document.querySelector(".timer")
 const cardsClick = document.querySelector("div")
 const startBtn = document.querySelector(".start")
 const startMenu = document.querySelector(".start-menu")
 
 let selected = []
 let disableClick = false
-
-
+let time
+let seconds = 0
 
 const cardData = [
   {
@@ -51,9 +52,9 @@ cardsClick.addEventListener("click", selectCard)
 
 function startGame() {
   if(!selectedDifficulty) return
+  time = setInterval(startTime, 1000)
   generateCards(cardData).forEach(el => {
     const newDiv = document.createElement("div")
-    console.log(el.link)
     newDiv.innerHTML = `
       <div class="rounded-md card selected" data-value="${el.id}">
       <div class="cover"></div>
@@ -65,6 +66,7 @@ function startGame() {
   })
   startMenu.classList.add("hidden")
   cardCover.classList.remove("hidden")
+  timer.classList.remove("hidden")
 }
 
 
@@ -76,7 +78,10 @@ function selectCard(e) {
   e.target.classList.remove("selected")
 
   if(selected.length == 2 && checkMatch()) {
-    // do nothing
+    const cards = document.querySelectorAll(".card")
+    if(Array.from(cards).every(el => !el.classList.contains("selected"))) {
+      clearInterval(time)
+    }
     selected =  []
   } else if (selected.length == 2) {
     disableClick = true
@@ -109,4 +114,9 @@ function shuffleCards() {
 function generateCards(cards) {
   const newCards = [...cards, ...cards]
   return newCards.sort(() => Math.random() - 0.5);
+}
+
+function startTime() {
+  seconds++
+  timer.textContent = `Timer: ${seconds}`
 }
