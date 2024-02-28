@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+body {
+  font-family: "VT323", monospace;
+}
+
 .difficulty li.selected {
   background: #a1a1a1;
   color: #fff;
