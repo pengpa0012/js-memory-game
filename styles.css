@@ -51,53 +51,65 @@
 }
 
 .card-cover.left {
-  animation: moveLeft 1000ms ease-in alternate infinite;
+  animation: moveLeft 5000ms ease-in alternate infinite;
 }
 
 .card-cover.right {
-  animation: moveRight 1000ms ease-in alternate infinite;
+  animation: moveRight 5000ms ease-in alternate infinite;
 }
 
 .card-cover.up {
-  animation: moveUp 1000ms ease-in alternate infinite;
+  animation: moveUp 5000ms ease-in alternate infinite;
 }
 
 .card-cover.down {
-  animation: moveDown 1000ms ease-in alternate infinite;
+  animation: moveDown 5000ms ease-in alternate infinite;
 }
 
 @keyframes moveLeft {
-  from {
+  0% {
     transform: translateX(0);
   }
-  to {
+  50% {
     transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 
 @keyframes moveRight {
-  from {
+  0% {
     transform: translateX(0);
   }
-  to {
+  50% {
     transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 
 @keyframes moveUp {
-  from {
+  0% {
     transform: translateY(0);
   }
-  to {
+  50% {
     transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 
 @keyframes moveDown {
-  from {
+  0% {
     transform: translateY(0);
   }
-  to {
+  50% {
     transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
