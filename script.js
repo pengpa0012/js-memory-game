@@ -14,7 +14,6 @@ const finalScore = document.querySelector(".score-screen h4")
 let selected = []
 let disableClick = false
 let time
-// let shuffleTime 
 let seconds = 0
 timer.textContent = "Timer: 0"
 const animationDirection = ["left", "right", "up", "down"]
@@ -38,8 +37,6 @@ function startGame() {
   if(!selectedDifficulty) return
   time = setInterval(startTime, 1000)
   if(selectedDifficulty == "Hard") mainCover.classList.add("max-w-xl")
-  // prob change this
-  // shuffleTime = setInterval(startShuffle, 5000)
   generateCards(cardData[selectedDifficulty]).forEach(el => {
     const newDiv = document.createElement("div")
     newDiv.innerHTML = `
@@ -72,7 +69,6 @@ function selectCard(e) {
     const cards = document.querySelectorAll(".card")
     if(Array.from(cards).every(el => !el.classList.contains("selected"))) {
       clearInterval(time)
-      // clearInterval(shuffleTime)
       setTimeout(() => {
         cardCover.classList.add("hidden")
         timer.classList.add("hidden")
@@ -114,21 +110,8 @@ function generateCards(cards) {
 function startTime() {
   seconds++
   timer.textContent = `Timer: ${seconds}`
-  
 }
 
-// function startShuffle() {
-//   if(selectedDifficulty == "Hard") {
-//     const cards = document.querySelectorAll(".card-cover")
-//     cards.forEach(el => {
-//       console.log("aaa")
-//       el.addEventListener("animationend", () => {
-//         console.log("testet")
-//         el.className = `rounded-md card-cover ${animationDirection[Math.floor(Math.random() * 4)]}`
-//       })
-//     })
-//   }
-// }
 
 function goToHome() {
   startMenu.classList.remove("hidden")
@@ -151,3 +134,7 @@ function restartGame() {
   cardCover.innerHTML = ""
   startGame()
 }
+
+// update btn ui
+// add sound if correct answer
+// add bg music
