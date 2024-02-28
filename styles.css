@@ -49,3 +49,55 @@
 .card.selected > .cover::after {
   transform: translateX(100%);
 }
+
+.card-cover.left {
+  animation: moveLeft 1000ms ease-in alternate infinite;
+}
+
+.card-cover.right {
+  animation: moveRight 1000ms ease-in alternate infinite;
+}
+
+.card-cover.up {
+  animation: moveUp 1000ms ease-in alternate infinite;
+}
+
+.card-cover.down {
+  animation: moveDown 1000ms ease-in alternate infinite;
+}
+
+@keyframes moveLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes moveRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes moveUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes moveDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
