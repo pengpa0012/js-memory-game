@@ -13,6 +13,9 @@ const scoreScreen = document.querySelector(".score-screen")
 const leaderboardScreen = document.querySelector(".leaderboard-screen")
 const finalScore = document.querySelector(".score-screen h4")
 
+const correctSFX = new Audio("./assets/sounds/correct-sfx.mp3");
+const wrongSFX = new Audio("./assets/sounds/wrong-sfx.mp3");
+
 let selected = []
 let disableClick = false
 let time
@@ -71,6 +74,7 @@ function selectCard(e) {
 
   if(selected.length == 2 && checkMatch()) {
     const cards = document.querySelectorAll(".card")
+    correctSFX.play()
     if(Array.from(cards).every(el => !el.classList.contains("selected"))) {
       clearInterval(time)
       setTimeout(() => {
@@ -83,6 +87,7 @@ function selectCard(e) {
     selected =  []
   } else if (selected.length == 2) {
     disableClick = true
+    wrongSFX.play()
     setTimeout(() => {
       hideCards()
       disableClick = false
