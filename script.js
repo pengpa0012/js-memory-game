@@ -5,10 +5,12 @@ const cardCover = document.querySelector(".cards")
 const timer = document.querySelector(".timer")
 const cardsClick = document.querySelector("div")
 const startBtn = document.querySelector(".start")
-const homeBtn = document.querySelector(".home-btn")
+const homeBtn = document.querySelector("div")
 const restartBtn = document.querySelector(".restart-btn")
+const leaderboardBtn = document.querySelector(".leaderboard-btn")
 const startMenu = document.querySelector(".start-menu")
 const scoreScreen = document.querySelector(".score-screen")
+const leaderboardScreen = document.querySelector(".leaderboard-screen")
 const finalScore = document.querySelector(".score-screen h4")
 
 let selected = []
@@ -31,6 +33,7 @@ difficulties.forEach(el => {
 startBtn.addEventListener("click", startGame)
 homeBtn.addEventListener("click", goToHome)
 restartBtn.addEventListener("click", restartGame)
+leaderboardBtn.addEventListener("click", goToLeaderboard)
 cardsClick.addEventListener("click", selectCard)
 
 function startGame() {
@@ -52,6 +55,7 @@ function startGame() {
     cardCover.appendChild(newDiv)
   })
   startMenu.classList.add("hidden")
+  leaderboardBtn.classList.add("hidden")
   cardCover.classList.remove("hidden")
   timer.classList.remove("hidden")
 }
@@ -113,8 +117,15 @@ function startTime() {
 }
 
 
-function goToHome() {
+function goToHome(e) { 
+  if(!e.target.closest(".home-btn")) return
   startMenu.classList.remove("hidden")
+  console.log(e.target.attributes["data-screen"].value)
+  if(e.target.attributes["data-screen"].value == "end") {
+    leaderboardBtn.classList.remove("hidden")
+  } else {
+    leaderboardScreen.classList.add("hidden")
+  }
   cardCover.classList.add("hidden")
   timer.classList.add("hidden")
   scoreScreen.classList.add("hidden")
@@ -133,6 +144,11 @@ function restartGame() {
   finalScore.textContent = ""
   cardCover.innerHTML = ""
   startGame()
+}
+
+function goToLeaderboard() {
+  leaderboardScreen.classList.remove("hidden")
+  startMenu.classList.add("hidden")
 }
 
 // update btn ui

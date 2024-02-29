@@ -9,7 +9,7 @@ body {
 }
 
 .difficulty li.selected {
-  background: #a1a1a1;
+  background: #454545;
   color: #fff;
   border-radius: 5px;
 }
