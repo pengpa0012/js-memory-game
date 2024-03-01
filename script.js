@@ -82,6 +82,18 @@ function selectCard(e) {
         timer.classList.add("hidden")
         scoreScreen.classList.remove("hidden")
         finalScore.textContent = `Your Time: ${seconds} seconds`
+
+        fetch("http://localhost:3000/createScore", {
+          method: "POST",
+          headers: {
+            "x-api-key": "API_KEY",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            score: seconds.toString(),
+            difficulty: selectedDifficulty
+          })
+        })
       }, 1000)
     }
     selected =  []
@@ -152,10 +164,36 @@ function restartGame() {
 }
 
 function goToLeaderboard() {
+  // add sort here by: score, date
+  fetch("http://localhost:3000/getScores", {
+    headers: {
+      "x-api-key": "API_KEY",
+      "Content-Type": "application/json",
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    const scoreLists = document.querySelector(".score-lists")
+    const result = data.data
+
+    result.forEach(el => {
+      const newLi = document.createElement("li")
+      newLi.classList.add("py-2")
+      newLi.innerHTML = `
+        <ul class="flex justify-between">
+          <li>Date: ${el.date_created}</li>
+          <li>Time: ${el.score}</li>
+          <li>Difficulty: ${el.difficulty}</li>
+        </ul>
+      `
+      scoreLists.appendChild(newLi)
+    })
+  })
   leaderboardScreen.classList.remove("hidden")
   startMenu.classList.add("hidden")
 }
 
 // update btn ui
-// add sound if correct answer
 // add bg music
+// update card cover ui
+// deploy
