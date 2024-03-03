@@ -197,13 +197,21 @@ function submitForm(e) {
   const repeat_password = e.target[2].value
 
   if(!username || !password) return
-  if(isLogin) {
-    // login endpoint here
-  } else {
-    if(!repeat_password) return
-    // signup
-  }
-  console.log(username, password, repeat_password, isLogin)
+  
+  if(!isLogin && !repeat_password) return alert("Password does not match")
+    
+  fetch(`http://localhost:3000/${isLogin ? "login" : "signup"}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username,
+      password
+    })
+  })
+
+
 }
 
 function createAccount(isLogin) {
