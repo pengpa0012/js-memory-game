@@ -1,4 +1,4 @@
-import { cardData } from "./card-data.js"
+import { cardData } from "./assets/js/card-data.js"
 const difficulties = document.querySelectorAll(".difficulty li")
 const mainCover = document.querySelector(".main-cover")
 const cardCover = document.querySelector(".cards")
@@ -189,10 +189,21 @@ function toggleForm(show, e) {
 
 function submitForm(e) {
   e.preventDefault()
+
+  const formTitle = document.querySelector(".form-title")
+  const isLogin = formTitle.textContent == "Login" ? true : false
   const username = e.target[0].value
   const password = e.target[1].value
   const repeat_password = e.target[2].value
-  console.log(username, password, repeat_password)
+
+  if(!username || !password) return
+  if(isLogin) {
+    // login endpoint here
+  } else {
+    if(!repeat_password) return
+    // signup
+  }
+  console.log(username, password, repeat_password, isLogin)
 }
 
 function createAccount(isLogin) {
