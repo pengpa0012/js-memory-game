@@ -16,7 +16,7 @@
     <div class="flex justify-between items-center">
       <h1 class="text-2xl text-center my-12">JS Memory Game</h1>
       <div class="flex gap-4">
-        <button class="text-xl">Login</button>
+        <button class="text-xl login-btn">Login</button>
       </div>
     </div>
     <button class="mb-12 flex mx-auto text-xl leaderboard-btn">Leaderboard</button>
@@ -45,12 +45,13 @@
   </div>
   <div class="modal-overlay">
     <div class="modal">
-      <h3 class="mb-4 text-center text-2xl form-title">Signup</h3>
+      <h3 class="mb-4 text-center text-2xl form-title">Login</h3>
       <form>
         <input type="text" placeholder="username">
         <input type="password" placeholder="password">
-        <input type="password" placeholder="repeat_password">
-        <button>Create account</button>
+        <input type="password" placeholder="repeat_password" class="hidden">
+        <button class="create-account-btn" type="button">Create account</button>
+        <button class="login-account-btn hidden" type="button">Login</button>
         <button type="submit" class="bg-green-500 text-lg px-4 text-white rounded-md">Submit</button>
       </form>
     </div>

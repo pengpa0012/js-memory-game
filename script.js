@@ -3,15 +3,23 @@ const difficulties = document.querySelectorAll(".difficulty li")
 const mainCover = document.querySelector(".main-cover")
 const cardCover = document.querySelector(".cards")
 const timer = document.querySelector(".timer")
+
 const cardsClick = document.querySelector("div")
 const startBtn = document.querySelector(".start")
 const homeBtn = document.querySelector("div")
 const restartBtn = document.querySelector(".restart-btn")
 const leaderboardBtn = document.querySelector(".leaderboard-btn")
+const loginBtn = document.querySelector(".login-btn")
+const createAccountBtn = document.querySelector(".create-account-btn")
+const loginAccountBtn = document.querySelector(".login-account-btn")
+
 const startMenu = document.querySelector(".start-menu")
+const modalOverlay = document.querySelector(".modal-overlay")
+const modal = document.querySelector(".modal")
 const scoreScreen = document.querySelector(".score-screen")
 const leaderboardScreen = document.querySelector(".leaderboard-screen")
 const finalScore = document.querySelector(".score-screen h4")
+const form = document.querySelector("form")
 
 const correctSFX = new Audio("./assets/sounds/correct-sfx.mp3");
 const wrongSFX = new Audio("./assets/sounds/wrong-sfx.mp3");
@@ -38,6 +46,11 @@ homeBtn.addEventListener("click", goToHome)
 restartBtn.addEventListener("click", restartGame)
 leaderboardBtn.addEventListener("click", goToLeaderboard)
 cardsClick.addEventListener("click", selectCard)
+loginBtn.addEventListener("click", () => toggleForm(true))
+modalOverlay.addEventListener("click", (e) => toggleForm(false, e))
+form.addEventListener("submit", (e) => submitForm(e))
+createAccountBtn.addEventListener("click", () => createAccount(false))
+loginAccountBtn.addEventListener("click", () => createAccount(true))
 
 function startGame() {
   if(!selectedDifficulty) return
@@ -86,7 +99,7 @@ function selectCard(e) {
         fetch("http://localhost:3000/createScore", {
           method: "POST",
           headers: {
-            "x-api-key": "API_KEY",
+            "Authorization": "Bearer " + "ACCESSTOKEN",
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -163,17 +176,53 @@ function restartGame() {
   startGame()
 }
 
+function toggleForm(show, e) {
+  if(show) {
+    modalOverlay.classList.add("show")
+    modal.classList.add("show")
+  } else {
+    if(e.target.closest(".modal")) return
+    modalOverlay.classList.remove("show")
+    modal.classList.remove("show")
+  }
+}
+
+function submitForm(e) {
+  e.preventDefault()
+  const username = e.target[0].value
+  const password = e.target[1].value
+  const repeat_password = e.target[2].value
+  console.log(username, password, repeat_password)
+}
+
+function createAccount(isLogin) {
+  const formTitle = document.querySelector(".form-title")
+  const repeatPassword = document.querySelector("input[placeholder='repeat_password']")
+  if(isLogin) {
+    formTitle.textContent = "Login"
+    repeatPassword.classList.add("hidden")
+    loginAccountBtn.classList.add("hidden")
+    createAccountBtn.classList.remove("hidden")
+  } else {
+    createAccountBtn.classList.add("hidden")
+    repeatPassword.classList.remove("hidden")
+    loginAccountBtn.classList.remove("hidden")
+    formTitle.textContent = "Signup"
+  }
+}
+
 function goToLeaderboard() {
   // add sort here by: score, date
+  const scoreLists = document.querySelector(".score-lists")
+  scoreLists.innerHTML = ""
   fetch("http://localhost:3000/getScores", {
     headers: {
-      "x-api-key": "API_KEY",
+      "Authorization": "Bearer " + "ACCESSTOKEN",
       "Content-Type": "application/json",
     }
   })
   .then(res => res.json())
   .then(data => {
-    const scoreLists = document.querySelector(".score-lists")
     const result = data.data
 
     result.forEach(el => {
