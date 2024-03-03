@@ -70,6 +70,50 @@ body {
   animation: moveDown 5000ms ease-in alternate infinite;
 }
 
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-overlay.show,
+.modal.show {
+  pointer-events: all;
+  opacity: 100%;
+}
+
+.modal-overlay,
+.modal {
+  pointer-events: none;
+  opacity: 0;
+  transition: 250ms ease-in;
+}
+
+.modal {
+  min-width: 400px;
+  margin: 0 auto;
+  background: white;
+  border: solid 1px #eee;
+  border-radius: 15px;
+  padding: 2rem;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal form input {
+  padding: 10px;
+  border: solid 1px #eee;
+  border-radius: 5px;
+  outline: none;
+  display: block;
+}
+
 @keyframes moveLeft {
   0% {
     transform: translateX(0);
