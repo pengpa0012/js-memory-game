@@ -3,6 +3,7 @@ const difficulties = document.querySelectorAll(".difficulty li")
 const mainCover = document.querySelector(".main-cover")
 const cardCover = document.querySelector(".cards")
 const timer = document.querySelector(".timer")
+const repeatPassword = document.querySelector("input[placeholder='repeat_password']")
 
 const cardsClick = document.querySelector("div")
 const startBtn = document.querySelector(".start")
@@ -10,6 +11,7 @@ const homeBtn = document.querySelector("div")
 const restartBtn = document.querySelector(".restart-btn")
 const leaderboardBtn = document.querySelector(".leaderboard-btn")
 const loginBtn = document.querySelector(".login-btn")
+const logoutBtn = document.querySelector(".logout-btn")
 const createAccountBtn = document.querySelector(".create-account-btn")
 const loginAccountBtn = document.querySelector(".login-account-btn")
 
@@ -47,6 +49,7 @@ restartBtn.addEventListener("click", restartGame)
 leaderboardBtn.addEventListener("click", goToLeaderboard)
 cardsClick.addEventListener("click", selectCard)
 loginBtn.addEventListener("click", () => toggleForm(true))
+logoutBtn.addEventListener("click", logout)
 modalOverlay.addEventListener("click", (e) => toggleForm(false, e))
 form.addEventListener("submit", (e) => submitForm(e))
 createAccountBtn.addEventListener("click", () => createAccount(false))
@@ -192,9 +195,9 @@ function submitForm(e) {
 
   const formTitle = document.querySelector(".form-title")
   const isLogin = formTitle.textContent == "Login" ? true : false
-  const username = e.target[0].value
-  const password = e.target[1].value
-  const repeat_password = e.target[2].value
+  let username = e.target[0].value
+  let password = e.target[1].value
+  let repeat_password = e.target[2].value
 
   if(!username || !password) return
   
@@ -210,13 +213,28 @@ function submitForm(e) {
       password
     })
   })
-
-
+  .then(data => {
+    if(data.status == 500) alert("Error Login")
+    else {
+      e.target[0].value = ""
+      e.target[1].value = ""
+      e.target[2].value = ""
+      alert(`${isLogin ? "Login" : "Signup"} Success`)
+      if(isLogin) {
+        modalOverlay.classList.remove("show")
+        modal.classList.remove("show")
+      } else {
+        formTitle.textContent = "Login"
+        repeatPassword.classList.add("hidden")
+        loginAccountBtn.classList.add("hidden")
+        createAccountBtn.classList.remove("hidden")
+      }
+    }
+  })
 }
 
 function createAccount(isLogin) {
   const formTitle = document.querySelector(".form-title")
-  const repeatPassword = document.querySelector("input[placeholder='repeat_password']")
   if(isLogin) {
     formTitle.textContent = "Login"
     repeatPassword.classList.add("hidden")
@@ -228,6 +246,11 @@ function createAccount(isLogin) {
     loginAccountBtn.classList.remove("hidden")
     formTitle.textContent = "Signup"
   }
+}
+
+function logout () {
+  // clear access token here
+  logoutBtn.classList.add("hidden")
 }
 
 function goToLeaderboard() {
