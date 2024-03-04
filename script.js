@@ -101,8 +101,8 @@ function selectCard(e) {
 
         fetch("http://localhost:3000/createScore", {
           method: "POST",
+          credentials: "include",
           headers: {
-            "Authorization": "Bearer " + "ACCESSTOKEN",
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -251,6 +251,7 @@ function createAccount(isLogin) {
 function logout () {
   // clear access token here
   logoutBtn.classList.add("hidden")
+  document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
 }
 
 function goToLeaderboard() {
@@ -258,8 +259,8 @@ function goToLeaderboard() {
   const scoreLists = document.querySelector(".score-lists")
   scoreLists.innerHTML = ""
   fetch("http://localhost:3000/getScores", {
+    credentials: "include",
     headers: {
-      "Authorization": "Bearer " + "ACCESSTOKEN",
       "Content-Type": "application/json",
     }
   })
