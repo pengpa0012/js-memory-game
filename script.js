@@ -110,6 +110,7 @@ function selectCard(e) {
             difficulty: selectedDifficulty
           })
         })
+        .catch(err => console.log(err))
       }, 1000)
     }
     selected =  []
@@ -231,6 +232,7 @@ function submitForm(e) {
       }
     }
   })
+  .catch(err => console.log(err))
 }
 
 function createAccount(isLogin) {
@@ -251,7 +253,14 @@ function createAccount(isLogin) {
 function logout () {
   // clear access token here
   logoutBtn.classList.add("hidden")
-  document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+  fetch("http://localhost:3000/logout", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  })
+  .catch(err => console.log(err))
 }
 
 function goToLeaderboard() {
