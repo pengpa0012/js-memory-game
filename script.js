@@ -154,7 +154,6 @@ function startTime() {
 function goToHome(e) { 
   if(!e.target.closest(".home-btn")) return
   startMenu.classList.remove("hidden")
-  console.log(e.target.attributes["data-screen"].value)
   if(e.target.attributes["data-screen"].value == "end") {
     leaderboardBtn.classList.remove("hidden")
   } else {
@@ -224,6 +223,7 @@ function submitForm(e) {
       if(isLogin) {
         modalOverlay.classList.remove("show")
         modal.classList.remove("show")
+        loginBtn.classList.remove("hidden")
       } else {
         formTitle.textContent = "Login"
         repeatPassword.classList.add("hidden")
@@ -253,6 +253,7 @@ function createAccount(isLogin) {
 function logout () {
   // clear access token here
   logoutBtn.classList.add("hidden")
+  loginBtn.classList.remove("hidden")
   fetch("http://localhost:3000/logout", {
     method: "POST",
     credentials: "include",
@@ -261,6 +262,7 @@ function logout () {
     }
   })
   .catch(err => console.log(err))
+  alert("Logout Successfully")
 }
 
 function goToLeaderboard() {
