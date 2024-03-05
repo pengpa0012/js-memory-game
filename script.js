@@ -59,6 +59,8 @@ function startGame() {
   if(!selectedDifficulty) return
   time = setInterval(startTime, 1000)
   if(selectedDifficulty == "Hard") mainCover.classList.add("max-w-xl")
+  else mainCover.classList.remove("max-w-xl")
+
   generateCards(cardData[selectedDifficulty]).forEach(el => {
     const newDiv = document.createElement("div")
     newDiv.innerHTML = `
@@ -271,7 +273,7 @@ function logout () {
 function goToLeaderboard() {
   // add sort here by: score, date
   const scoreLists = document.querySelector(".score-lists")
-  scoreLists.innerHTML = ""
+  scoreLists.innerHTML = "<p class='text-center'>Loading...</p>"
   fetch("http://localhost:3000/getScores", {
     credentials: "include",
     headers: {
@@ -281,7 +283,6 @@ function goToLeaderboard() {
   .then(res => res.json())
   .then(data => {
     const result = data.data
-
     result.forEach(el => {
       const newLi = document.createElement("li")
       newLi.classList.add("py-2")
@@ -294,6 +295,8 @@ function goToLeaderboard() {
       `
       scoreLists.appendChild(newLi)
     })
+  }).catch((err) => {
+    scoreLists.innerHTML = "<p class='text-center'>Login or create an account to view the leaderboard.</p>"
   })
   leaderboardScreen.classList.remove("hidden")
   startMenu.classList.add("hidden")
