@@ -19,6 +19,7 @@ const startMenu = document.querySelector(".start-menu")
 const modalOverlay = document.querySelector(".modal-overlay")
 const modal = document.querySelector(".modal")
 const scoreScreen = document.querySelector(".score-screen")
+const headerTitle = document.querySelector(".header-title")
 const leaderboardScreen = document.querySelector(".leaderboard-screen")
 const finalScore = document.querySelector(".score-screen h4")
 const form = document.querySelector("form")
@@ -45,6 +46,7 @@ difficulties.forEach(el => {
 
 startBtn.addEventListener("click", startGame)
 homeBtn.addEventListener("click", goToHome)
+headerTitle.addEventListener("click", goToHome)
 restartBtn.addEventListener("click", restartGame)
 leaderboardBtn.addEventListener("click", goToLeaderboard)
 cardsClick.addEventListener("click", selectCard)
@@ -154,22 +156,24 @@ function startTime() {
 
 
 function goToHome(e) { 
-  if(!e.target.closest(".home-btn")) return
-  startMenu.classList.remove("hidden")
-  if(e.target.attributes["data-screen"].value == "end") {
-    leaderboardBtn.classList.remove("hidden")
-  } else {
-    leaderboardScreen.classList.add("hidden")
+  if(e.target.closest(".home-btn") || e.target.closest(".header-title")) {
+    startMenu.classList.remove("hidden")
+    if(e.target.attributes["data-screen"].value == "end") {
+      leaderboardBtn.classList.remove("hidden")
+    } else {
+      leaderboardScreen.classList.add("hidden")
+    }
+    cardCover.classList.add("hidden")
+    timer.classList.add("hidden")
+    scoreScreen.classList.add("hidden")
+    finalScore.textContent = ""
+    cardCover.innerHTML = ""
+    difficulties.forEach(el => el.classList.remove("selected"))
+    selectedDifficulty = ""
+    seconds = 0
+    timer.textContent = "Timer: 0"
+    clearInterval(time)
   }
-  cardCover.classList.add("hidden")
-  timer.classList.add("hidden")
-  scoreScreen.classList.add("hidden")
-  finalScore.textContent = ""
-  cardCover.innerHTML = ""
-  difficulties.forEach(el => el.classList.remove("selected"))
-  selectedDifficulty = ""
-  seconds = 0
-  timer.textContent = "Timer: 0"
 }
 
 function restartGame() {
