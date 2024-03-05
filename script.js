@@ -187,6 +187,9 @@ function toggleForm(show, e) {
     if(e.target.closest(".modal")) return
     modalOverlay.classList.remove("show")
     modal.classList.remove("show")
+    form.children[0].value = ""
+    form.children[1].value = ""
+    form.children[2].value = ""
   }
 }
 
