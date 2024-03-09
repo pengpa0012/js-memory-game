@@ -26,7 +26,7 @@ body {
   width: 100%;
   height: 100%;
   transform: translateX(-100%);
-  background: #aa1919;
+  background: url("./assets/images/card-bg.webp");
 }
 
 .cover::after {
@@ -35,7 +35,7 @@ body {
   height: 100%;
   width: 100%;
   transform: translateX(200%);
-  background: #2323a3;
+  background:  url("./assets/images/card-bg.webp");
   right: 0;
 }
 
