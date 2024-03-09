@@ -48,10 +48,10 @@ startBtn.addEventListener("click", startGame)
 homeBtn.addEventListener("click", goToHome)
 headerTitle.addEventListener("click", goToHome)
 restartBtn.addEventListener("click", restartGame)
-leaderboardBtn.addEventListener("click", goToLeaderboard)
+// leaderboardBtn.addEventListener("click", goToLeaderboard)
 cardsClick.addEventListener("click", selectCard)
-loginBtn.addEventListener("click", () => toggleForm(true))
-logoutBtn.addEventListener("click", logout)
+// loginBtn.addEventListener("click", () => toggleForm(true))
+// logoutBtn.addEventListener("click", logout)
 modalOverlay.addEventListener("click", (e) => toggleForm(false, e))
 form.addEventListener("submit", (e) => submitForm(e))
 createAccountBtn.addEventListener("click", () => createAccount(false))
@@ -78,7 +78,7 @@ function startGame() {
     cardCover.appendChild(newDiv)
   })
   startMenu.classList.add("hidden")
-  leaderboardBtn.classList.add("hidden")
+  // leaderboardBtn.classList.add("hidden")
   cardCover.classList.remove("hidden")
   timer.classList.remove("hidden")
 }
@@ -158,11 +158,11 @@ function startTime() {
 function goToHome(e) { 
   if(e.target.closest(".home-btn") || e.target.closest(".header-title")) {
     startMenu.classList.remove("hidden")
-    if(e.target.attributes["data-screen"].value == "end") {
-      leaderboardBtn.classList.remove("hidden")
-    } else {
-      leaderboardScreen.classList.add("hidden")
-    }
+    // if(e.target.attributes["data-screen"].value == "end") {
+    //   leaderboardBtn.classList.remove("hidden")
+    // } else {
+    //   leaderboardScreen.classList.add("hidden")
+    // }
     cardCover.classList.add("hidden")
     timer.classList.add("hidden")
     scoreScreen.classList.add("hidden")
@@ -302,11 +302,13 @@ function goToLeaderboard() {
   }).catch((err) => {
     scoreLists.innerHTML = "<p class='text-center'>Login or create an account to view the leaderboard.</p>"
   })
-  leaderboardScreen.classList.remove("hidden")
+  // leaderboardScreen.classList.remove("hidden")
   startMenu.classList.add("hidden")
 }
 
 // update btn ui
 // add bg music
 // update card cover ui
+// add local score
+//  -store in local storage
 // deploy
