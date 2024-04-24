@@ -14,12 +14,19 @@ body {
   border-radius: 5px;
 }
 
+.main-cover {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
 
 .card {
   width: 100px;
   height: 150px;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 }
 
 .cover {

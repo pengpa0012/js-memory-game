@@ -9,20 +9,22 @@ const cardsClick = document.querySelector("div")
 const startBtn = document.querySelector(".start")
 const homeBtn = document.querySelector("div")
 const restartBtn = document.querySelector(".restart-btn")
-const leaderboardBtn = document.querySelector(".leaderboard-btn")
-const loginBtn = document.querySelector(".login-btn")
-const logoutBtn = document.querySelector(".logout-btn")
-const createAccountBtn = document.querySelector(".create-account-btn")
-const loginAccountBtn = document.querySelector(".login-account-btn")
+const scoresBtn = document.querySelector(".scores-btn")
+// const leaderboardBtn = document.querySelector(".leaderboard-btn")
+// const loginBtn = document.querySelector(".login-btn")
+// const logoutBtn = document.querySelector(".logout-btn")
+// const createAccountBtn = document.querySelector(".create-account-btn")
+// const loginAccountBtn = document.querySelector(".login-account-btn")
 
 const startMenu = document.querySelector(".start-menu")
 const modalOverlay = document.querySelector(".modal-overlay")
 const modal = document.querySelector(".modal")
 const scoreScreen = document.querySelector(".score-screen")
 const headerTitle = document.querySelector(".header-title")
-const leaderboardScreen = document.querySelector(".leaderboard-screen")
+// const leaderboardScreen = document.querySelector(".leaderboard-screen")
+const scoresLists = document.querySelector(".scores-lists")
 const finalScore = document.querySelector(".score-screen h4")
-const form = document.querySelector("form")
+// const form = document.querySelector("form")
 
 const correctSFX = new Audio("./assets/sounds/correct-sfx.mp3");
 const wrongSFX = new Audio("./assets/sounds/wrong-sfx.mp3");
@@ -47,15 +49,16 @@ difficulties.forEach(el => {
 startBtn.addEventListener("click", startGame)
 homeBtn.addEventListener("click", goToHome)
 headerTitle.addEventListener("click", goToHome)
+scoresBtn.addEventListener("click", goToScores)
 restartBtn.addEventListener("click", restartGame)
 // leaderboardBtn.addEventListener("click", goToLeaderboard)
 cardsClick.addEventListener("click", selectCard)
 // loginBtn.addEventListener("click", () => toggleForm(true))
 // logoutBtn.addEventListener("click", logout)
 modalOverlay.addEventListener("click", (e) => toggleForm(false, e))
-form.addEventListener("submit", (e) => submitForm(e))
-createAccountBtn.addEventListener("click", () => createAccount(false))
-loginAccountBtn.addEventListener("click", () => createAccount(true))
+// form.addEventListener("submit", (e) => submitForm(e))
+// createAccountBtn.addEventListener("click", () => createAccount(false))
+// loginAccountBtn.addEventListener("click", () => createAccount(true))
 
 function startGame() {
   if(!selectedDifficulty) return
@@ -78,6 +81,7 @@ function startGame() {
     cardCover.appendChild(newDiv)
   })
   startMenu.classList.add("hidden")
+  scoresBtn.classList.add("hidden")
   // leaderboardBtn.classList.add("hidden")
   cardCover.classList.remove("hidden")
   timer.classList.remove("hidden")
@@ -103,18 +107,22 @@ function selectCard(e) {
         scoreScreen.classList.remove("hidden")
         finalScore.textContent = `Your Time: ${seconds} seconds`
 
-        fetch("http://localhost:3000/createScore", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            score: seconds.toString(),
-            difficulty: selectedDifficulty
-          })
-        })
-        .catch(err => console.log(err))
+        const getScores = JSON.parse(localStorage.getItem("scores") || "[]")
+
+        localStorage.setItem("scores", JSON.stringify([...getScores, {score: seconds, difficulty: selectedDifficulty}]))
+
+        // fetch("http://localhost:3000/createScore", {
+        //   method: "POST",
+        //   credentials: "include",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     score: seconds.toString(),
+        //     difficulty: selectedDifficulty
+        //   })
+        // })
+        // .catch(err => console.log(err))
       }, 1000)
     }
     selected =  []
@@ -166,6 +174,8 @@ function goToHome(e) {
     cardCover.classList.add("hidden")
     timer.classList.add("hidden")
     scoreScreen.classList.add("hidden")
+    scoresBtn.classList.remove("hidden")
+    scoresLists.classList.add("hidden")
     finalScore.textContent = ""
     cardCover.innerHTML = ""
     difficulties.forEach(el => el.classList.remove("selected"))
@@ -199,116 +209,134 @@ function toggleForm(show, e) {
   }
 }
 
-function submitForm(e) {
-  e.preventDefault()
+function goToScores() {
 
-  const formTitle = document.querySelector(".form-title")
-  const isLogin = formTitle.textContent == "Login" ? true : false
-  let username = e.target[0].value
-  let password = e.target[1].value
-  let repeat_password = e.target[2].value
-
-  if(!username || !password) return
-  
-  if(!isLogin && !repeat_password) return alert("Password does not match")
-    
-  fetch(`http://localhost:3000/${isLogin ? "login" : "signup"}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username,
-      password
+  const getScores = JSON.parse(localStorage.getItem("scores") || "[]")
+  scoresLists.classList.remove("hidden")
+  startMenu.classList.add("hidden")
+  scoresBtn.classList.add("hidden")
+  scoresLists.innerHTML = ""
+  if(getScores.length > 0) {
+    getScores.forEach(el => {
+      const p = document.createElement("p")
+      p.textContent = `Score: ${el.score} seconds - Difficulty: ${el.difficulty}`
+      p.classList.add("text-xl")
+      scoresLists.appendChild(p)
     })
-  })
-  .then(data => {
-    if(data.status == 500) alert("Error Login")
-    else {
-      e.target[0].value = ""
-      e.target[1].value = ""
-      e.target[2].value = ""
-      alert(`${isLogin ? "Login" : "Signup"} Success`)
-      if(isLogin) {
-        modalOverlay.classList.remove("show")
-        modal.classList.remove("show")
-        loginBtn.classList.remove("hidden")
-      } else {
-        formTitle.textContent = "Login"
-        repeatPassword.classList.add("hidden")
-        loginAccountBtn.classList.add("hidden")
-        createAccountBtn.classList.remove("hidden")
-      }
-    }
-  })
-  .catch(err => console.log(err))
-}
-
-function createAccount(isLogin) {
-  const formTitle = document.querySelector(".form-title")
-  if(isLogin) {
-    formTitle.textContent = "Login"
-    repeatPassword.classList.add("hidden")
-    loginAccountBtn.classList.add("hidden")
-    createAccountBtn.classList.remove("hidden")
   } else {
-    createAccountBtn.classList.add("hidden")
-    repeatPassword.classList.remove("hidden")
-    loginAccountBtn.classList.remove("hidden")
-    formTitle.textContent = "Signup"
+    scoresLists.innerHTML = "No scores yet"
   }
 }
 
-function logout () {
-  // clear access token here
-  logoutBtn.classList.add("hidden")
-  loginBtn.classList.remove("hidden")
-  fetch("http://localhost:3000/logout", {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    }
-  })
-  .catch(err => console.log(err))
-  alert("Logout Successfully")
-}
+// function submitForm(e) {
+//   e.preventDefault()
 
-function goToLeaderboard() {
-  // add sort here by: score, date
-  const scoreLists = document.querySelector(".score-lists")
-  scoreLists.innerHTML = "<p class='text-center'>Loading...</p>"
-  fetch("http://localhost:3000/getScores", {
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    }
-  })
-  .then(res => res.json())
-  .then(data => {
-    const result = data.data
-    result.forEach(el => {
-      const newLi = document.createElement("li")
-      newLi.classList.add("py-2")
-      newLi.innerHTML = `
-        <ul class="flex justify-between">
-          <li>Date: ${el.date_created}</li>
-          <li>Time: ${el.score}</li>
-          <li>Difficulty: ${el.difficulty}</li>
-        </ul>
-      `
-      scoreLists.appendChild(newLi)
-    })
-  }).catch((err) => {
-    scoreLists.innerHTML = "<p class='text-center'>Login or create an account to view the leaderboard.</p>"
-  })
-  // leaderboardScreen.classList.remove("hidden")
-  startMenu.classList.add("hidden")
-}
+//   const formTitle = document.querySelector(".form-title")
+//   const isLogin = formTitle.textContent == "Login" ? true : false
+//   let username = e.target[0].value
+//   let password = e.target[1].value
+//   let repeat_password = e.target[2].value
+
+//   if(!username || !password) return
+  
+//   if(!isLogin && !repeat_password) return alert("Password does not match")
+    
+//   fetch(`http://localhost:3000/${isLogin ? "login" : "signup"}`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       username,
+//       password
+//     })
+//   })
+//   .then(data => {
+//     if(data.status == 500) alert("Error Login")
+//     else {
+//       e.target[0].value = ""
+//       e.target[1].value = ""
+//       e.target[2].value = ""
+//       alert(`${isLogin ? "Login" : "Signup"} Success`)
+//       if(isLogin) {
+//         modalOverlay.classList.remove("show")
+//         modal.classList.remove("show")
+//         loginBtn.classList.remove("hidden")
+//       } else {
+//         formTitle.textContent = "Login"
+//         repeatPassword.classList.add("hidden")
+//         loginAccountBtn.classList.add("hidden")
+//         createAccountBtn.classList.remove("hidden")
+//       }
+//     }
+//   })
+//   .catch(err => console.log(err))
+// }
+
+// function createAccount(isLogin) {
+//   const formTitle = document.querySelector(".form-title")
+//   if(isLogin) {
+//     formTitle.textContent = "Login"
+//     repeatPassword.classList.add("hidden")
+//     loginAccountBtn.classList.add("hidden")
+//     createAccountBtn.classList.remove("hidden")
+//   } else {
+//     createAccountBtn.classList.add("hidden")
+//     repeatPassword.classList.remove("hidden")
+//     loginAccountBtn.classList.remove("hidden")
+//     formTitle.textContent = "Signup"
+//   }
+// }
+
+// function logout () {
+//   // clear access token here
+//   logoutBtn.classList.add("hidden")
+//   loginBtn.classList.remove("hidden")
+//   fetch("http://localhost:3000/logout", {
+//     method: "POST",
+//     credentials: "include",
+//     headers: {
+//       "Content-Type": "application/json",
+//     }
+//   })
+//   .catch(err => console.log(err))
+//   alert("Logout Successfully")
+// }
+
+// function goToLeaderboard() {
+//   // add sort here by: score, date
+//   const scoreLists = document.querySelector(".score-lists")
+//   scoreLists.innerHTML = "<p class='text-center'>Loading...</p>"
+//   fetch("http://localhost:3000/getScores", {
+//     credentials: "include",
+//     headers: {
+//       "Content-Type": "application/json",
+//     }
+//   })
+//   .then(res => res.json())
+//   .then(data => {
+//     const result = data.data
+//     result.forEach(el => {
+//       const newLi = document.createElement("li")
+//       newLi.classList.add("py-2")
+//       newLi.innerHTML = `
+//         <ul class="flex justify-between">
+//           <li>Date: ${el.date_created}</li>
+//           <li>Time: ${el.score}</li>
+//           <li>Difficulty: ${el.difficulty}</li>
+//         </ul>
+//       `
+//       scoreLists.appendChild(newLi)
+//     })
+//   }).catch((err) => {
+//     scoreLists.innerHTML = "<p class='text-center'>Login or create an account to view the leaderboard.</p>"
+//   })
+//   // leaderboardScreen.classList.remove("hidden")
+//   startMenu.classList.add("hidden")
+// }
 
 // update btn ui
 // add bg music
 // update card cover ui
-// add local score
-//  -store in local storage
-// deploy
+// update card animation on hard mode
+// change images
