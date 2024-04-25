@@ -28,6 +28,7 @@ const finalScore = document.querySelector(".score-screen h4")
 
 const correctSFX = new Audio("./assets/sounds/correct-sfx.mp3");
 const wrongSFX = new Audio("./assets/sounds/wrong-sfx.mp3");
+const bgSFX = new Audio("./assets/sounds/bg.mp3");
 
 let selected = []
 let disableClick = false
@@ -63,6 +64,9 @@ modalOverlay.addEventListener("click", (e) => toggleForm(false, e))
 function startGame() {
   if(!selectedDifficulty) return
   time = setInterval(startTime, 1000)
+  bgSFX.loop = true
+  bgSFX.volume = 0.05
+  bgSFX.play()
   if(selectedDifficulty == "Hard") mainCover.classList.add("max-w-xl")
   else mainCover.classList.remove("max-w-xl")
 
@@ -106,6 +110,8 @@ function selectCard(e) {
         timer.classList.add("hidden")
         scoreScreen.classList.remove("hidden")
         finalScore.textContent = `Your Time: ${seconds} seconds`
+        bgSFX.pause()
+        bgSFX.currentTime = 0
 
         const getScores = JSON.parse(localStorage.getItem("scores") || "[]")
 
@@ -336,7 +342,4 @@ function goToScores() {
 // }
 
 // update btn ui
-// add bg music
-// update card cover ui
 // update card animation on hard mode
-// change images
