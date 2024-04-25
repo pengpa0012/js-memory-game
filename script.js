@@ -26,9 +26,11 @@ const scoresLists = document.querySelector(".scores-lists")
 const finalScore = document.querySelector(".score-screen h4")
 // const form = document.querySelector("form")
 
-const correctSFX = new Audio("./assets/sounds/correct-sfx.mp3");
-const wrongSFX = new Audio("./assets/sounds/wrong-sfx.mp3");
-const bgSFX = new Audio("./assets/sounds/bg.mp3");
+const correctSFX = new Audio("./assets/sounds/correct-sfx.mp3")
+const wrongSFX = new Audio("./assets/sounds/wrong-sfx.mp3")
+const bgSFX = new Audio("./assets/sounds/bg.mp3")
+const tapSFX = new Audio("./assets/sounds/tap.mp3")
+tapSFX.volume = 0.5
 
 let selected = []
 let disableClick = false
@@ -41,6 +43,9 @@ let selectedDifficulty = ""
 
 difficulties.forEach(el => {
   el.addEventListener("click", (e) => {
+    if(!el.classList.contains("selected")) {
+      tapSFX.play()
+    }
     difficulties.forEach(rm => rm.classList.remove("selected"))
     e.target.classList.add("selected")
     selectedDifficulty = e.target.textContent
@@ -63,6 +68,7 @@ modalOverlay.addEventListener("click", (e) => toggleForm(false, e))
 
 function startGame() {
   if(!selectedDifficulty) return
+  tapSFX.play()
   time = setInterval(startTime, 1000)
   bgSFX.loop = true
   bgSFX.volume = 0.05
@@ -160,7 +166,7 @@ function hideCards() {
 
 function generateCards(cards) {
   const newCards = [...cards, ...cards]
-  return newCards.sort(() => Math.random() - 0.5);
+  return newCards.sort(() => Math.random() - 0.5)
 }
 
 function startTime() {
@@ -171,7 +177,12 @@ function startTime() {
 
 function goToHome(e) { 
   if(e.target.closest(".home-btn") || e.target.closest(".header-title")) {
+    if(startMenu.classList.contains("hidden")) {
+      tapSFX.play()
+    }
     startMenu.classList.remove("hidden")
+    bgSFX.pause()
+    bgSFX.currentTime = 0
     // if(e.target.attributes["data-screen"].value == "end") {
     //   leaderboardBtn.classList.remove("hidden")
     // } else {
@@ -194,6 +205,7 @@ function goToHome(e) {
 
 function restartGame() {
   scoreScreen.classList.add("hidden")
+  tapSFX.play()
   seconds = 0
   timer.textContent = "Timer: 0"
   finalScore.textContent = ""
@@ -216,7 +228,7 @@ function toggleForm(show, e) {
 }
 
 function goToScores() {
-
+  tapSFX.play()
   const getScores = JSON.parse(localStorage.getItem("scores") || "[]")
   scoresLists.classList.remove("hidden")
   startMenu.classList.add("hidden")
