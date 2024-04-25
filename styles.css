@@ -120,50 +120,16 @@ body {
   outline: none;
 }
 
-@keyframes moveLeft {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
+.hard-card {
+  animation: moveTo 2500ms linear alternate infinite;
 }
 
-@keyframes moveRight {
-  0% {
-    transform: translateX(0);
+@keyframes moveTo {
+  from {
+    transform: translate(0, 0);
   }
-  50% {
-    transform: translateX(50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
 
-@keyframes moveUp {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-50%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes moveDown {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(50%);
-  }
-  100% {
-    transform: translateY(0);
+  to {
+    transform: translate(var(--x), var(--y));
   }
 }

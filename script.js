@@ -76,7 +76,7 @@ function startGame() {
   if(selectedDifficulty == "Hard") mainCover.classList.add("max-w-xl")
   else mainCover.classList.remove("max-w-xl")
 
-  generateCards(cardData[selectedDifficulty]).forEach(el => {
+  generateCards(cardData[selectedDifficulty]).forEach((el, i) => {
     const newDiv = document.createElement("div")
     newDiv.innerHTML = `
       <div class="rounded-md card selected" data-value="${el.id}">
@@ -86,7 +86,12 @@ function startGame() {
     newDiv.style.background = `url(${el.link})`
     newDiv.className = "rounded-md"
     if(selectedDifficulty == "Hard") {
-      newDiv.className = `rounded-md card-cover ${animationDirection[Math.floor(Math.random() * 4)]} transition`
+      const x = Math.floor(Math.random() * 100)
+      const y = Math.floor(Math.random() * 100)
+      const isReverse = Math.floor(Math.random() * 2) == 0 ? true : false
+      newDiv.className = `rounded-md card-cover hard-card transition`
+      newDiv.style.setProperty("--x", (isReverse ? x : -x) + "px")
+      newDiv.style.setProperty("--y", (isReverse ? y : -y) + "px")
     }
     cardCover.appendChild(newDiv)
   })
